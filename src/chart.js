@@ -1,4 +1,5 @@
-function palettePlot(colPalette) {
+function palettePlot(paletteName) {
+  const colPalette = PrettyCols[paletteName].colors;
   const width = 600;
   const padding = 10;
   const n = colPalette.length;
@@ -12,6 +13,8 @@ function palettePlot(colPalette) {
     y: 1,
     colour: colPalette[i]
   }));
+
+  d3.select("#plot").html('');
 
   const chartContainer = d3.select("#plot")
     .style('background-color', "#F0F5F5")
@@ -44,6 +47,32 @@ function palettePlot(colPalette) {
   
 }
 
+
+function populateDropdown() {
+  const paletteNames = Object.keys(PrettyCols);
+  console.log(paletteNames)
+
+  // Create the select element for the dropdown
+  const dropdown = d3.select('#dropdown-container')
+    .append('select')
+    .attr('id', 'palette-dropdown')
+    .on('change', function() {
+      const selected = d3.select(this).property('value');
+      palettePlot(selected);
+    });
+
+  // Add options to the dropdown
+  dropdown.selectAll('option')
+    .data(paletteNames)
+    .enter()
+    .append('option')
+    .text(d => d)
+    .attr('value', d => d);
+
+  // Trigger
+  dropdown.dispatch('change');
+}
+
 window.onload = function () {
-  palettePlot(PrettyCols.Lucent.colors);
+  populateDropdown();
 };
