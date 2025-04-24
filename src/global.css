@@ -58,11 +58,12 @@ main {
 
 }
 
-#palette-dropdown {
-    width: 100%;
+#palette-dropdown, #file-dropdown {
+    width: 200px;
     font-size: large;
     border-radius: 5px;
     background-color: white;
     border-color: #508080;
     border-width: 2px;
+    margin-left: 5px;
 }
