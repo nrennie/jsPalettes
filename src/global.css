@@ -6,8 +6,12 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
-p {
+p, .plotText {
     font-family: 'Commissioner', Arial, sans-serif;
+}
+
+.code {
+    font-family: monospace
 }
 
 a {
@@ -54,7 +58,8 @@ main {
 }
 
 .row .col-12 {
-    padding-bottom: 10px;
+    padding-bottom: 0px;
+    padding-top: 20px;
 
 }
 

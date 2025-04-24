@@ -6,11 +6,13 @@ const paletteFiles = {
 function palettePlot(fileName, paletteName) {
   const colPalette = paletteFiles[fileName][paletteName].colors;
 
-  const width = 600;
+  const width = 800;
   const padding = 10;
   const n = colPalette.length;
   const boxSize = width / n;
   const height = boxSize + padding * 2;
+  const labelSpace = 200;
+  const svgHeight = height + labelSpace;
 
   const labels = d3.range(n).map(i => String.fromCharCode(65 + i));
 
@@ -29,7 +31,7 @@ function palettePlot(fileName, paletteName) {
 
   const svg = chartContainer
     .append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('viewBox', `0 0 ${width} ${svgHeight}`)
     .attr('preserveAspectRatio', 'xMidYMid meet')
     .style('width', '100%')
     .style('height', 'auto')
@@ -50,6 +52,42 @@ function palettePlot(fileName, paletteName) {
     .attr('height', x.bandwidth())
     .style('fill', d => d.colour)
     .style('stroke', 'none');
+
+  svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("y", height + 25)
+    .attr("x", width/2)
+    .attr('class', 'plotText')
+    .text("Include this palette collection in a project by adding:")
+    .style("fill", "#2F4F4F")
+    .style("font-size", "large");
+
+  svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("y", height + 50)
+    .attr("x", width/2)
+    .attr('class', 'code')
+    .text("<script src='https://nrennie.rbind.io/jsPalettes/" + fileName + ".js'></script>")
+    .style("fill", "#2F4F4F")
+    .style("font-size", "large");
+
+  svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("y", height + 100)
+    .attr("x", width/2)
+    .attr('class', 'plotText')
+    .text("Then access the palette using:")
+    .style("fill", "#2F4F4F")
+    .style("font-size", "large");
+
+  svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("y", height + 125)
+    .attr("x", width/2)
+    .attr('class', 'code')
+    .text(fileName + "." + paletteName + ".colors")
+    .style("fill", "#2F4F4F")
+    .style("font-size", "large");
 }
 
 function populateDropdowns() {
