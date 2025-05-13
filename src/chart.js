@@ -3,16 +3,14 @@ const paletteFiles = {
   Pride
 };
 
-function palettePlot(fileName, paletteName) {
-  const colPalette = paletteFiles[fileName][paletteName].colors;
+// Plot palette as heatmap
+function palettePlot(colPalette, plotID) {
 
   const width = 800;
   const padding = 10;
   const n = colPalette.length;
   const boxSize = width / n;
   const height = boxSize + padding * 2;
-  const labelSpace = 200;
-  const svgHeight = height + labelSpace;
 
   const labels = d3.range(n).map(i => String.fromCharCode(65 + i));
 
@@ -22,16 +20,16 @@ function palettePlot(fileName, paletteName) {
     colour: colPalette[i]
   }));
 
-  d3.select("#plot").html(''); // Clear previous chart
+  d3.select(plotID).html(''); // Clear previous chart
 
-  const chartContainer = d3.select("#plot")
+  const chartContainer = d3.select(plotID)
     .style('background-color', "#F0F5F5")
     .style('padding', padding + 'px')
     .style('width', width + padding * 2 + 'px');
 
   const svg = chartContainer
     .append('svg')
-    .attr('viewBox', `0 0 ${width} ${svgHeight}`)
+    .attr('viewBox', `0 0 ${width} ${height}`)
     .attr('preserveAspectRatio', 'xMidYMid meet')
     .style('width', '100%')
     .style('height', 'auto')
@@ -53,9 +51,33 @@ function palettePlot(fileName, paletteName) {
     .style('fill', d => d.colour)
     .style('stroke', 'none');
 
+}
+
+// Add text
+function paletteText(fileName, paletteName) {
+  
+  const width = 800;
+  const padding = 10;
+  const height = 200;
+
+  d3.select("#plotText").html(''); // Clear previous chart
+
+  const chartContainer = d3.select("#plotText")
+    .style('background-color', "#F0F5F5")
+    .style('padding', padding + 'px')
+    .style('width', width + padding * 2 + 'px');
+
+  const svg = chartContainer
+    .append('svg')
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('width', '100%')
+    .style('height', 'auto')
+    .append('g');
+
   svg.append("text")
     .attr("text-anchor", "middle")
-    .attr("y", height + 25)
+    .attr("y", 25)
     .attr("x", width/2)
     .attr('class', 'plotText')
     .text("Include this palette collection in a project by adding:")
@@ -64,7 +86,7 @@ function palettePlot(fileName, paletteName) {
 
   svg.append("text")
     .attr("text-anchor", "middle")
-    .attr("y", height + 50)
+    .attr("y", 50)
     .attr("x", width/2)
     .attr('class', 'code')
     .text("<script src='https://nrennie.rbind.io/jsPalettes/" + fileName + ".js'></script>")
@@ -73,7 +95,7 @@ function palettePlot(fileName, paletteName) {
 
   svg.append("text")
     .attr("text-anchor", "middle")
-    .attr("y", height + 100)
+    .attr("y", 100)
     .attr("x", width/2)
     .attr('class', 'plotText')
     .text("Then access the palette using:")
@@ -82,7 +104,7 @@ function palettePlot(fileName, paletteName) {
 
   svg.append("text")
     .attr("text-anchor", "middle")
-    .attr("y", height + 125)
+    .attr("y", 125)
     .attr("x", width/2)
     .attr('class', 'code')
     .text(fileName + "." + paletteName + ".colors")
@@ -124,7 +146,11 @@ function updatePaletteDropdown(fileName) {
     .attr('id', 'palette-dropdown')
     .on('change', function () {
       const selectedPalette = d3.select(this).property('value');
-      palettePlot(fileName, selectedPalette); // <-- uses correct fileName
+      const colPalette = paletteFiles[fileName][selectedPalette].colors;
+      const greyPalette = toGreyscale(colPalette);
+      palettePlot(colPalette, "#plot"); 
+      palettePlot(greyPalette, "#plotBW");
+      paletteText(fileName, selectedPalette)
     });
 
   paletteDropdown.selectAll('option')

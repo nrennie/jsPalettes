@@ -10,6 +10,7 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="PrettyCols.js"></script>
   <script src="Pride.js"></script>
+  <script src="src/utils.js"></script>
   <script src="src/chart.js"></script>
     
   <title>jsPalettes</title>
@@ -38,7 +39,15 @@
           <div id="plot"></div>
         </div>
         <div class="col-12 d-flex justify-content-center text-center">
-          <div id="text"></div>
+          <div class="resize">
+            <p>These palettes are designed for aesthetic purposes, and do not necessarily meet accessibility requirements if used in data visualisations. In greyscale, this palette appears as:</p>
+          </div>         
+        </div>
+        <div class="col-12 d-flex justify-content-center text-center">        
+          <div id="plotBW"></div>
+        </div>
+        <div class="col-12 d-flex justify-content-center text-center">
+          <div id="plotText"></div>
         </div>
       </div>
     </div>

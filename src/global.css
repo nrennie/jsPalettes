@@ -63,6 +63,11 @@ main {
 
 }
 
+div.resize {
+    max-width: 800px;
+    margin: auto;
+}
+
 #palette-dropdown, #file-dropdown {
     width: 200px;
     font-size: large;
